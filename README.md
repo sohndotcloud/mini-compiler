@@ -19,11 +19,11 @@ What makes Grammel unique is how it's built. It uses something called *Definite 
 - MacOS, Windows and Linux
 
 ## Tools Used
-- *Paser*:
-- *Lexer*:
-- *Interpreter/Runtime*:
-- *Version Control*:
-- *Build Tool*:
+- *Paser*: DCG in Prolog
+- *Lexer*: Handwritten in Prolog using pattern-matching
+- *Interpreter/Runtime*: Implemented in Prolog
+- *Version Control*: GitHub (private repository)
+- *Build Tool*: Build
 
 ## Team Members
 - Advait Kulhada, Anushree Bhure, Himanshi Bhanushali, Nils Sohn
