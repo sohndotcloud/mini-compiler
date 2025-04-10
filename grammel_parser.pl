@@ -1,48 +1,63 @@
+%  START
 Program(program(FL)) --> FunctionList(FL). 
 
+%  FUNCTION LIST
 FunctionList((F, FL)) --> Function(F) FunctionList(FL).
 FunctionList(F) --> Function(F). 
 
+%  FUNCTION STRUCTURE
 Function(func(S, BS)) --> Signature(S), BlockScope(BS). 
 Signature(sign(T, I, AL)) --> Type(T), Id(I), [(], ArgList(AL), [)]. 
 ArgList((A, AL)) --> Arg(A), [,], ArgList(AL).
 ArgList((A)) --> Arg(A). 
 Arg(arg(T, I)) --> Type(T), Id(I). 
 
+%  SCOPE
 BlockScope((B)) --> [{], Block(B), [}]. 
 Block(block(S)) --> StatementBlockList(S). 
 
+%  STATEMENTS BLOCK LIST
 StatementBlockList((SB, SBL)) --> StatementBlock(SB), StatementBlockList(SBL).
 StatementBlockList((SB)) --> StatementBlock(SB). 
 
+%  STATEMENT BLOCK
 StatementBlock(SL) --> StatementsList(SL), [;].
-ConditionalList(CL) --> ConditionalList(CL).
+StatementBlock(CL) --> ConditionalList(CL).
 
+%  CONDITIONAL LIST
 ConditionalList((C, CL)) --> Conditional(C), ConditionalList(CL).
 ConditionalList(C) --> Conditional(C). 
 
+%  STATEMENTS LIST
 StatementsList((S, SL)) --> Statement(S), [;], StatementsList(SL).
 StatementsList(S) --> Statement(S). 
 
+%  STATEMENT
 Statement(state(DL)) --> Declaration(DL).
 Statement(state(AS)) --> Assignment(AS). 
 
+%  CONDITIONAL
 Conditional(cond(IF)) --> IFTE(IF).
 Conditional(cond(WL)) --> WhileLoop(WL).
 Conditional(cond(FL)) --> ForLoop(FL). 
 
+%  CONDITIONAL PARAN
 ConditionalParan(condParan(B)) -> [(], Boolean(B), [)]. 
 
+% IFTE
 Ifte(ifte(C, B)) --> [if], ConditionalParan(C), BlockScope(B). 
 Ifte(ifte(C, B, E)) --> [if], ConditionalParan(C), BlockScope(B), Else(E).
 Else(elseif(I)) --> [else], Ifte(I)
 Else(ifelse(B)) --> [else], BlockScope(B). 
+
+% WHILE
 WhileLoop(wloop(C, B)) -> [while], ConditionalParan(C), BlockScope(B). 
 
+% FOR LOOP
 ForLoop(floop(C1, B, C2, BL)) -> [for], [(], Csv(C1), [;], Boolean(B), [;], Csv(C2), [)], BlockScope(BL). 
 Csv(csv(S, C)) --> Statement(S), [,], Csv(C).
 Csv(S) --> Statement(S). 
-
+ 
 Declaration(decl(T, I)) --> Type(T), Id(I).
 Declaration(decl(T, I, A)) --> Type(T), Id(I), [=], AnyValue(A).
 Declaration(decl(T, I, E)) --> Type(T), Id(I), [=], Expression(E). 
