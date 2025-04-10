@@ -2,7 +2,7 @@
 Program(program(FL)) --> FunctionList(FL). 
 
 %  FUNCTION LIST
-FunctionList((F, FL)) --> Function(F) FunctionList(FL).
+FunctionList((F, FL)) --> Function(F), FunctionList(FL).
 FunctionList(F) --> Function(F). 
 
 %  FUNCTION STRUCTURE
