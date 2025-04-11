@@ -38,19 +38,3 @@ sample_tokens([
     print, id(x), ';',
   '}'
 ]).
-
-% --- Tree Printer ---
-print_tree(Tree) :- print_node(Tree, 0).
-
-print_node(Term, Indent) :-
-    functor(Term, Name, Arity),
-    tab(Indent), write(Name), nl,
-    print_args(1, Arity, Term, Indent + 2).
-
-print_args(I, Arity, _, _) :- I > Arity, !.
-print_args(I, Arity, Term, Indent) :-
-    arg(I, Term, Arg),
-    ( compound(Arg) -> print_node(Arg, Indent)
-    ; tab(Indent), write(Arg), nl ),
-    I1 is I + 1,
-    print_args(I1, Arity, Term, Indent).
