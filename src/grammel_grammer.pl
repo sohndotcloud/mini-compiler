@@ -1,5 +1,5 @@
 %  START
-Program(program(FL)) --> FunctionList(FL). 
+Program(program(FL)) --> FunctionList(FL).
 
 %  FUNCTION LIST
 FunctionList((F, FL)) --> Function(F), FunctionList(FL).
@@ -34,7 +34,12 @@ StatementsList(S) --> Statement(S).
 
 %  STATEMENT
 Statement(state(DL)) --> Declaration(DL).
-Statement(state(AS)) --> Assignment(AS). 
+Statement(state(AS)) --> Assignment(AS).
+Statement(state(PS)) --> PrintStatement(PS).
+
+% PRINT STATEMENT
+PrintStatement(print(V)) --> [print], Value(V).
+PrintStatement(print_id(I)) --> [print], Id(I).
 
 %  CONDITIONAL
 Conditional(cond(IF)) --> IFTE(IF).
@@ -84,7 +89,7 @@ Any(A) --> AnyValue(A).
 Any(E) --> Expression(E). 
 
 AnyValue(B) --> Boolean(B).
-AnyValue(V) --> Value(V).
+AnyValue(V) --> Value(V).  % Optional fallback if AnyValue is comprehensive
 AnyValue(S) --> String(S).
 AnyValue(T) --> Ternary(T). 
 
