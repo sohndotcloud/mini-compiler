@@ -1,9 +1,6 @@
 :- use_rendering(svgtree).
-% --- Simplified DCG to Avoid Looping ---
-% Entry point: a single function only
 program(program(F)) --> function(F).
 
-% Function with one signature and one block
 function(func(Signature, BlockScope)) --> signature(Signature), block_scope(BlockScope).
 
 signature(sign(Type, Id, Args)) --> type(Type), id(Id), ['('], arg_list(Args), [')'].
@@ -18,11 +15,8 @@ block_scope(block(Block)) --> ['{'], block(Block), ['}'].
 
 block(statements([S1, S2])) --> statement(S1), [';'], statement(S2), [';'].
 
-% Two types of supported statements
 statement(state(decl(Type, Id, Val))) --> type(Type), id(Id), ['='], value(Val).
 statement(state(print_stmt(Id))) --> [print], id(Id).
-
-% --- Terminals and Values ---
 
 id(id(X)) --> [id(X)].
 value(val(X)) --> [val(X)].
