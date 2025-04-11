@@ -93,14 +93,17 @@ AnyValue(V) --> Value(V).  % Optional fallback if AnyValue is comprehensive
 AnyValue(S) --> String(S).
 AnyValue(T) --> Ternary(T). 
 
-String(string(C)) -> [“], Chars(C), [“]. 
+String(string(S)) --> ['"'], StringChars(S), ['"'].
+
+StringChars([C|Cs]) --> [C], { C \= '"' }, StringChars(Cs).
+StringChars([]) --> [].
 
 % TODO Define list of characters 
 Chars(chars()) -> [a-zA-Z0-9...]+ 
 Integer(int()) -> [0-9]+ 
 
-Expression(add(T1, T2)) --> Term(T1), +, Term(T2).
-Expression(subt(T1, T2)) --> Term(T1), –, Term(T2).
+Expression(add(T1, T2)) --> Term(T1), ['+'], Term(T2).
+Expression(subt(T1, T2)) --> Term(T1), ['-'], Term(T2).
 Expression(T) --> Term(T). 
 
 Term(mult(P1, P2)) --> Paran(P1), *, Paran(P2).
@@ -134,3 +137,5 @@ BooleanReturn(B) --> Boolean(B).
 BooleanReturn(BT) --> BooleanTernary(BT). 
 BooleanReturn(F) --> FunctionCall(F).
 FunctionCall(funcCall(I, PL)) -->  Id, [(], ParamList(PL), [)].
+ParamList((P, PL)) --> Any(P), [',''], ParamList(PL).
+ParamList(P) --> Any(P).
