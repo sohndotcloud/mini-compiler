@@ -1,141 +1,195 @@
-%  START
-Program(program(FL)) --> FunctionList(FL).
 
-%  FUNCTION LIST
-FunctionList((F, FL)) --> Function(F), FunctionList(FL).
-FunctionList(F) --> Function(F). 
+program(program(FL)) --> functionList(FL).
 
-%  FUNCTION STRUCTURE
-Function(func(S, BS)) --> Signature(S), BlockScope(BS). 
-Signature(sign(T, I, AL)) --> Type(T), Id(I), [(], ArgList(AL), [)]. 
-ArgList((A, AL)) --> Arg(A), [,], ArgList(AL).
-ArgList((A)) --> Arg(A). 
-Arg(arg(T, I)) --> Type(T), Id(I). 
+%  function LIST
+functionList(F) --> function(F). 
+functionList((F,FL)) --> function(F), functionList(FL).
+
+%  function STRUCTURE
+function(func(S, BS)) --> signature(S), blockScope(BS). 
+signature(sign(T, I, AL)) --> type(T), id(I), ['('], argList(AL), [')']. 
+argList((A)) --> argv(A). 
+argList(argList(A, AL)) --> argv(A), [','], argList(AL).
+argv(argv(T, I)) --> type(T), id(I). 
 
 %  SCOPE
-BlockScope((B)) --> [{], Block(B), [}]. 
-Block(block(S)) --> StatementBlockList(S). 
+blockScope((B)) --> ['{'], block(B), ['}']. 
+block(block(S)) --> statementBlockList(S). 
 
-%  STATEMENTS BLOCK LIST
-StatementBlockList((SB, SBL)) --> StatementBlock(SB), StatementBlockList(SBL).
-StatementBlockList((SB)) --> StatementBlock(SB). 
+%  statementS block LIST
+statementBlockList((SB)) --> statementBlock(SB). 
+statementBlockList((SB, SBL)) --> statementBlock(SB), statementBlockList(SBL).
 
-%  STATEMENT BLOCK
-StatementBlock(SL) --> StatementsList(SL), [;].
-StatementBlock(CL) --> ConditionalList(CL).
+%  statement BLOCK
+statementBlock(SL) --> statementsList(SL), [;].
+statementBlock(CL) --> conditionalList(CL).
 
-%  CONDITIONAL LIST
-ConditionalList((C, CL)) --> Conditional(C), ConditionalList(CL).
-ConditionalList(C) --> Conditional(C). 
+%  conditional LIST
+conditionalList(C) --> conditional(C). 
+conditionalList((C, CL)) --> conditional(C), conditionalList(CL).
 
-%  STATEMENTS LIST
-StatementsList((S, SL)) --> Statement(S), [;], StatementsList(SL).
-StatementsList(S) --> Statement(S). 
+%  statementS LIST
+statementsList(S) --> statement(S). 
+statementsList((S, SL)) --> statement(S), [;], statementsList(SL).
 
-%  STATEMENT
-Statement(state(DL)) --> Declaration(DL).
-Statement(state(AS)) --> Assignment(AS).
-Statement(state(PS)) --> PrintStatement(PS).
+%  statement
+statement(AS) --> assignment(AS).
+statement(DL) --> declaration(DL).
+statement(PS) --> printStatement(PS).
 
 % PRINT STATEMENT
-PrintStatement(print(V)) --> [print], Value(V).
-PrintStatement(print_id(I)) --> [print], Id(I).
+printStatement(print(V)) --> [print], integer(V).
+printStatement(print_id(I)) --> [print], id(I).
 
-%  CONDITIONAL
-Conditional(cond(IF)) --> IFTE(IF).
-Conditional(cond(WL)) --> WhileLoop(WL).
-Conditional(cond(FL)) --> ForLoop(FL). 
+%  conditional
+conditional(cond(IF)) --> ifte(IF).
+conditional(cond(WL)) --> whileLoop(WL).
+conditional(cond(FL)) --> forLoop(FL). 
 
-%  CONDITIONAL PARAN
-ConditionalParan(condParan(B)) -> [(], Boolean(B), [)]. 
+%  conditional PARAN
+conditionalParan(condParan(B)) --> ['('], boolean(B), [')']. 
 
-% IFTE
-Ifte(ifte(C, B)) --> [if], ConditionalParan(C), BlockScope(B). 
-Ifte(ifte(C, B, E)) --> [if], ConditionalParan(C), BlockScope(B), Else(E).
-Else(elseif(I)) --> [else], Ifte(I)
-Else(ifelse(B)) --> [else], BlockScope(B). 
+% ifte
+ifte(ifte(C, B)) --> [if], conditionalParan(C), blockScope(B). 
+ifte(ifte(C, B, E)) --> [if], conditionalParan(C), blockScope(B), else(E).
+else(else(B)) --> [else], blockScope(B). 
+else(elseif(I)) --> [else], ifte(I).
+else(elseif(I, B)) --> [else], ifte(I), else(B).
 
 % WHILE
-WhileLoop(wloop(C, B)) -> [while], ConditionalParan(C), BlockScope(B). 
+whileLoop(wloop(C, B)) --> [while], conditionalParan(C), blockScope(B). 
 
 % FOR LOOP
-ForLoop(floop(C1, B, C2, BL)) -> [for], [(], Csv(C1), [;], Boolean(B), [;], Csv(C2), [)], BlockScope(BL). 
-Csv(csv(S, C)) --> Statement(S), [,], Csv(C).
-Csv(S) --> Statement(S). 
+forLoop(floop(C1, B, C2, BL)) --> [for], ['('], csv(C1), [;], boolean(B), [;], csv(C2), [')'], blockScope(BL). 
+csv(csv(S, C)) --> statement(S), [','], csv(C).
+csv(S) --> statement(S). 
  
-Declaration(decl(T, I)) --> Type(T), Id(I).
-Declaration(decl(T, I, A)) --> Type(T), Id(I), [=], AnyValue(A).
-Declaration(decl(T, I, E)) --> Type(T), Id(I), [=], Expression(E). 
+declaration(decl(T, I)) --> type(T), id(I).
+declaration(decl(T, I, A)) --> type(T), id(I), [=], anyValue(A).
+declaration(decl(T, I, E)) --> type(T), id(I), [=], expression(E). 
 
 % How to scan for partial strings like ++ and -- 
-Assignment(assign(I, A)) --> Id(I), [=], AnyValue(A).
-Assignment(assign(I, E)) --> Id(I), [=], Expression(E).
-Assignment(assign(I, AOP, E)) --> Id(I), AssignmentOperator(AOP), Expression(E).
-Assignment(assign(I, VOP)) --> Id(I), ValueOperator(VOP).
-Assignment(assign(VOP, I)) --> ValueOperator(VOP), Id(I). 
+assignment(assign(I, A)) --> id(I), [=], anyValue(A).
+assignment(assign(I, B)) --> id(I), [=], boolean(B).
+assignment(assign(I, E)) --> id(I), [=], expression(E).
+assignment(assign(I, AOP, E)) --> id(I), assignmentOperator(AOP), expression(E).
+assignment(assign(I, VOP)) --> id(I), valueOperator(VOP).
+assignment(assign(VOP, I)) --> valueOperator(VOP), id(I). 
 
-AssignmentOperator(assignOp(+=)) --> [+=].
-AssignmentOperator(assignOp(-=)) --> [-=].
-AssignmentOperator(assignOp(*=)) --> [*=].
-AssignmentOperator(assignOp(\/=)) --> [/=]. 
-ValueOperator(valueOp(++)) --> [++].
-ValueOperator(valueOp(--)) --> [--]. 
+assignmentOperator(assignOp(+=)) --> [+=].
+assignmentOperator(assignOp(-=)) --> [-=].
+assignmentOperator(assignOp(*=)) --> [*=].
+assignmentOperator(assignOp(\/=)) --> [/=]. 
+valueOperator(valueOp(++)) --> [++].
+valueOperator(valueOp(--)) --> [--]. 
 
-Type(type(int)) --> [int].
-Type(type(boolean)) --> [boolean]. 
-Type(type(String)) --> [String].
+type(type(int)) --> [int].
+type(type(boolean)) --> [boolean]. 
+type(type(string)) --> [string].
 
-Any(A) --> AnyValue(A).
-Any(E) --> Expression(E). 
+any(A) --> anyValue(A).
+any(E) --> expression(E). 
 
-AnyValue(B) --> Boolean(B).
-AnyValue(V) --> Value(V).  % Optional fallback if AnyValue is comprehensive
-AnyValue(S) --> String(S).
-AnyValue(T) --> Ternary(T). 
+anyValue(V) --> integerWrap(V).
+anyValue(S) --> string(S).
+anyValue(T) --> ternary(T). 
 
-String(string(S)) --> ['"'], StringChars(S), ['"'].
-
-StringChars([C|Cs]) --> [C], { C \= '"' }, StringChars(Cs).
-StringChars([]) --> [].
+id(name(S)) --> char(S).
+string(string(S)) --> ['"'], chars(S), ['"'].
 
 % TODO Define list of characters 
-Chars(chars()) -> [a-zA-Z0-9...]+ 
-Integer(int()) -> [0-9]+ 
+chars((C1, C2)) --> char(C1), chars(C2).
+chars((C)) --> char(C).
+char((a)) --> [a].
+char((b)) --> [b].
+char((c)) --> [c].
+char((d)) --> [d].
+char((e)) --> [e].
+char((f)) --> [f].
+char((g)) --> [g].
+char((h)) --> [h].
+char((i)) --> [i].
+char((j)) --> [j].
+char((k)) --> [k].
+char((l)) --> [l].
+char((m)) --> [m].
+char((n)) --> [n].
+char((o)) --> [o].
+char((p)) --> [p].
+char((q)) --> [q].
+char((r)) --> [r].
+char((s)) --> [s].
+char((t)) --> [t].
+char((u)) --> [u].
+char((v)) --> [v].
+char((w)) --> [w].
+char((x)) --> [x].
+char((y)) --> [y].
+char((z)) --> [z].
+char((1)) --> [1].
+char((2)) --> [2].
+char((3)) --> [3].
+char((4)) --> [4].
+char((5)) --> [5].
+char((6)) --> [6].
+char((7)) --> [7].
+char((8)) --> [8].
+char((9)) --> [9].
+char((0)) --> [0].
+char((.)) --> [.].
+char((!)) --> [!].
+char((@)) --> [@].
+char((#)) --> [#].
 
-Expression(add(T1, T2)) --> Term(T1), ['+'], Term(T2).
-Expression(subt(T1, T2)) --> Term(T1), ['-'], Term(T2).
-Expression(T) --> Term(T). 
+integerWrap(integer(V)) --> integerList(V).
+integerList(V) --> integer(V).
+integerList((V1,V2)) --> integer(V1), integerList(V2).
+integer((0)) --> [0].
+integer((1)) --> [1].
+integer((2)) --> [2].
+integer((3)) --> [3].
+integer((4)) --> [4].
+integer((5)) --> [5].
+integer((6)) --> [6].
+integer((7)) --> [7].
+integer((8)) --> [8].
+integer((9)) --> [9].
 
-Term(mult(P1, P2)) --> Paran(P1), *, Paran(P2).
-Term(div(P1, P2)) --> Paran(P1) / Paran(P2).
-Term(P) --> Paran(P). 
+expression(T) --> term(T). 
+expression(add(T1, T2)) --> term(T1), ['+'], expression(T2).
+expression(subt(T1, T2)) --> term(T1), ['-'], expression(T2).
 
-Paran(paran(E)) --> [(], Expression(E), [)].
-Paran(V) --> Value(V). 
+term(P) --> paran(P). 
+term(mult(P1, P2)) --> paran(P1), [*], paran(P2).
+term(div(P1, P2)) --> paran(P1), [/], paran(P2).
 
-Ternary(tern(B, A1, A2)) -> Boolean(B), [?],  Any(A1), [:], Any(A2). 
+paran(paran(E)) --> ['('], expression(E), [')'].
+paran(integer(V)) --> integerList(V). 
 
-Boolean(bool(true)) --> [true].
-Boolean(bool(false)) --> [false].
-Boolean(bool(not, B)) --> [not], Boolean(B).
-Boolean(bool(B, BOP, B)) --> Boolean(B), BoolOperator(BOP), Boolean(B).
-Boolean(bool(E1, NOP, E2, BT)) --> Expression(E1), NumOperator(NOP), Expression(E2), BooleanTernary(BT).  
+ternary(tern(B, A1, A2)) --> boolean(B), [?],  any(A1), [:], any(A2). 
+ternary(tern(B, A1, A2)) --> boolean(B), [?],  boolean(A1), [:], boolean(A2). 
 
-NumOperator(nop(>)) --> [>].
-NumOperator(nop(>=)) --> [>=].
-NumOperator(nop(<)) --> [<].
-NumOperator(nop(<=)) --> [<=].
-NumOperator(nop(==)) --> [==].
+boolean(bool(true)) --> [true].
+boolean(bool(false)) --> [false].
+boolean(bool(not, B)) --> [not], boolean(B).
+boolean(bool(V1, NOP, V2)) --> booleanNumOp(V1), numOperator(NOP), booleanNumOp(V2).
+boolean(bool(V, BOP, B1)) --> id(V), boolOperator(BOP), id(B1).
 
-BoolOperator(bop(and)) --> [and].
-BoolOperator(bop(or)) --> [or].
-BoolOperator(bop(==)) --> [==]. 
+booleanNumOp(V) --> id(V).
+booleanNumOp(V) --> integer(V).
 
-BooleanTernary(bTern(BR, B1, B2)) -> BooleanReturn(BR), [?], Boolean(B1), [:], Boolean(B2). 
+numOperator(nop(>)) --> [>].
+numOperator(nop(>=)) --> [>=].
+numOperator(nop(<)) --> [<].
+numOperator(nop(<=)) --> [<=].
+numOperator(nop(==)) --> [==].
 
-BooleanReturn(B) --> Boolean(B).
-BooleanReturn(BT) --> BooleanTernary(BT). 
-BooleanReturn(F) --> FunctionCall(F).
-FunctionCall(funcCall(I, PL)) -->  Id, [(], ParamList(PL), [)].
-ParamList((P, PL)) --> Any(P), [',''], ParamList(PL).
-ParamList(P) --> Any(P).
+boolOperator(bop(and)) --> [and].
+boolOperator(bop(or)) --> [or].
+boolOperator(bop(==)) --> [==]. 
+
+booleanTernary(bTern(BR, B1, B2)) --> boolean(BR), [?], boolean(B1), [:], boolean(B2). 
+
+functionCall(funcCall(I, PL)) -->  id(I), ['('], paramList(PL), [')'].
+paramList((P, PL)) --> any(P), [','], paramList(PL).
+paramList(P) --> any(P).
