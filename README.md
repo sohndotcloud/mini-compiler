@@ -7,12 +7,15 @@ Grammel: is a simple and powerful programming language designed to feel familiar
 You can use Grammel to write loops, conditional statements, and print output—without any unnecessary complexity. Everything is designed to be easy to understand and use.
 What makes Grammel unique is how it's built. It uses something called *Definite Clause Grammars (DCG)* to define its syntax and behavior. This approach not only makes the language work smoothly, but also makes it a great example of how programming languages are built and executed. That’s why Grammel is perfect for students, beginners, or anyone who wants to learn more about how languages work behind the scenes.
 
-## Features (As per Milestone 1)
+## Features (As per Milestone 2)
 - *Primitive Types*: int, string, float, char, boolen
-- *Operators*: +, -, *, /, <,>,==,<=,>=, and, or, not
-- *Assignment Operator*
+- *Operators*: +, -, *, /, <,>,==,<=,>=, +=, -=, and, or, not
+- *Assignment Operator*: x++, --y
 - *Conditional Constructor*
+- *Ternary Expressions*:	cond ? a : b for values and booleans
+- *Boolean Ternary Nesting*:	Multiple ? : expressions inside conditions
 - *Loops*: for, while, do-while
+- *Custom Block Scoping*:	Uses {} in DCG via BlockScope
 - *Print*: Statement for Output
 
 ## System Support
@@ -24,6 +27,8 @@ What makes Grammel unique is how it's built. It uses something called *Definite 
 - *Interpreter/Runtime*: Implemented in Prolog
 - *Version Control*: GitHub (private repository)
 - *Build Tool*: Build
+
+
 
 ## Team Members
 - Advait Kulhada, Anushree Bhure, Himanshi Bhanushali, Nils Sohn
