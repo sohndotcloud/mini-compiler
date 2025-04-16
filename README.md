@@ -28,7 +28,62 @@ What makes Grammel unique is how it's built. It uses something called *Definite 
 - *Version Control*: GitHub (private repository)
 - *Build Tool*: Build
 
+## Project Structure
 
+```
+Grammel/
+├── parser.pl              % Prolog grammar file using DCG rules
+├──          % Sample token stream and parse test
+├── README.md
+```
+
+## Requirements
+
+- **SWI-Prolog** installed (https://www.swi-prolog.org/)
+- **Java 17+**
+
+## ⚙️ Build Instructions
+
+### 🧪 Run the Tokenizer
+
+```bash
+cd Grammel
+javac -d out src/*.java
+java -cp out Main
+```
+
+- This will print a list of tokens, e.g.:
+```
+[int, x, =, 5, ;, print, x, ;]
+```
+
+### Run the Parser
+
+1. Open SWI-Prolog:
+```bash
+swipl
+```
+
+2. Load the parser:
+```prolog
+?- [parser].
+```
+
+3. Parse the token list (copy from tokenizer output):
+```prolog
+?- phrase().
+```
+
+4. Optional: Enable tree rendering (SWI-Prolog only):
+```prolog
+:- use_rendering(svgtree).
+```
+
+## Sample Program (in Grammel Syntax)
+
+```
+
+```
 
 ## Team Members
 - Advait Kulhada, Anushree Bhure, Himanshi Bhanushali, Nils Sohn
