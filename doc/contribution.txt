@@ -1,0 +1,16 @@
+Contributions from the team members until 3rd April (Milestone 1):
+
+*Basic Design on the language :- Advait, Anushree, Himanshi, Nils
+*Conceptualization and structure of the language:- Anushree, Himanshi
+*Grammar creation:-  Nils.
+*Poc for GitHub Repo:- Advait.
+*Design Document:- Advait.
+
+
+Contributions from the team members until 15th April (Milestone 2):
+
+*Building of parser :Nils, Advait.
+*Structuring the Grammar- Anushree.
+*Building of lexical analyzer :- Advait.
+*Sample Program running and testing :- Nils.
+*Structuring of tokens :- Himanshi.
