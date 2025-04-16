@@ -1,7 +1,7 @@
 import java.util.regex.*;
 import java.util.*;
 
-public class Lexer {
+public class grammel_lexer {
     private final String input;
     private int pos = 0;
 
