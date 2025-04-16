@@ -33,7 +33,12 @@ What makes Grammel unique is how it's built. It uses something called *Definite 
 ```
 Grammel/
 ├── parser.pl              % Prolog grammar file using DCG rules
-├──          % Sample token stream and parse test
+├── test_paser.pl          % Sample token stream and parse test
+├── src/
+│   ├── Main.java          % Entry point to run the tokenizer
+│   ├── grammel_lexer.java
+│   ├── Token.java
+│   ├── TokenType.java
 ├── README.md
 ```
 
@@ -71,7 +76,7 @@ swipl
 
 3. Parse the token list (copy from tokenizer output):
 ```prolog
-?- phrase().
+?- phrase(program(Tree), [int, x, =, 5, ;, print, x,;]).
 ```
 
 4. Optional: Enable tree rendering (SWI-Prolog only):
@@ -81,9 +86,49 @@ swipl
 
 ## Sample Program (in Grammel Syntax)
 
+```c
+int n(int x, int y) {
+    int z = 234;
+    z = 22;
+
+    if (x == y) {
+        y = 5;
+    } else if (true) {
+        x = 5;
+    } else {
+        x = 10;
+    }
+
+    while (x > y) {
+        z = x == y ? true : false;
+    }
+}
 ```
 
+### Tokenised Prolog Input
+
+```prolog
+program(P, [
+int, n, '(', int, x, ',', int, y, ')', '{',
+int, z, '=', 234, ';',
+z, '=', 22, ';',
+if, '(', x, '==', y, ')', '{',
+y, '=', 5, ';',
+'}',
+else, if, '(', true, ')', '{',
+x, '=', 5, ';',
+'}',
+else, '{',
+x, '=', 10, ';',
+'}',
+while, '(', x, '>', y, ')', '{',
+z, '=', x, '==', y, '?', true, ':', false, ';',
+'}',
+'}'
+], []).
 ```
+
+Use this in SWI-Prolog to test your parser.
 
 ## Team Members
 - Advait Kulhada, Anushree Bhure, Himanshi Bhanushali, Nils Sohn
