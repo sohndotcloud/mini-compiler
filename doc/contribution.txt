@@ -9,8 +9,8 @@ Contributions from the team members until 3rd April (Milestone 1):
 
 Contributions from the team members until 15th April (Milestone 2):
 
-*Building of parser :Nils, Advait.
+*Building of parser :Nils.
 *Structuring the Grammar- Anushree.
 *Building of lexical analyzer :- Advait.
-*Sample Program running and testing :- Nils.
+*Sample Program running and testing :- Nils,Advait.
 *Structuring of tokens :- Himanshi.
