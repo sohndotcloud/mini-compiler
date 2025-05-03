@@ -8,8 +8,8 @@ You can use Grammel to write loops, conditional statements, and print output—w
 What makes Grammel unique is how it's built. It uses something called *Definite Clause Grammars (DCG)* to define its syntax and behavior. This approach not only makes the language work smoothly, but also makes it a great example of how programming languages are built and executed. That’s why Grammel is perfect for students, beginners, or anyone who wants to learn more about how languages work behind the scenes.
 
 ## Features (As per Milestone 2)
-- *Primitive Types*: int, string, float, char, boolen
-- *Operators*: +, -, *, /, <,>,==,<=,>=, +=, -=, and, or, not
+- *Primitive Types*: int, string, boolen
+- *Operators*: <,>,==,<=,>=, +=, -=
 - *Assignment Operator*: x++, --y
 - *Conditional Constructor*
 - *Ternary Expressions*:	cond ? a : b for values and booleans
@@ -44,8 +44,8 @@ Grammel/
 
 ## Requirements
 
-- **SWI-Prolog** installed (https://www.swi-prolog.org/)
-- **Java 17+**
+- **gprolog** installed
+- **Java 11** required for boolean expressions
 
 ## ⚙️ Build Instructions
 
@@ -64,71 +64,35 @@ java -cp out Main
 
 ### Run the Parser
 
-1. Open SWI-Prolog:
-```bash
-swipl
+```
+./grammel.sh
 ```
 
-2. Load the parser:
-```prolog
-?- [parser].
-```
-
-3. Parse the token list (copy from tokenizer output):
-```prolog
-?- phrase(program(Tree), [int, x, =, 5, ;, print, x,;]).
-```
-
-4. Optional: Enable tree rendering (SWI-Prolog only):
-```prolog
-:- use_rendering(svgtree).
-```
 
 ## Sample Program (in Grammel Syntax)
 
 ```c
-int n(int x, int y) {
+int methodName(int x, int y) {
     int z = 234;
-    z = 22;
+    z = 27;
 
     if (x == y) {
-        y = 5;
-    } else if (true) {
-        x = 5;
+        y = 100;
+    else if {
+        z = 10;
     } else {
-        x = 10;
+        x = 100;
     }
 
-    while (x > y) {
+    while (x < 3) {
         z = x == y ? true : false;
+        x++;
     }
 }
 ```
 
-### Tokenised Prolog Input
-
-```prolog
-program(P, [
-int, n, '(', int, x, ',', int, y, ')', '{',
-int, z, '=', 234, ';',
-z, '=', 22, ';',
-if, '(', x, '==', y, ')', '{',
-y, '=', 5, ';',
-'}',
-else, if, '(', true, ')', '{',
-x, '=', 5, ';',
-'}',
-else, '{',
-x, '=', 10, ';',
-'}',
-while, '(', x, '>', y, ')', '{',
-z, '=', x, '==', y, '?', true, ':', false, ';',
-'}',
-'}'
-], []).
-```
 
 Use this in SWI-Prolog to test your parser.
 
 ## Team Members
-- Advait Kulhada, Anushree Bhure, Himanshi Bhanushali, Nils Sohn
+- =Nils Sohn

@@ -1,7 +1,8 @@
-import java.util.regex.*;
+package org.kotlin.spring;
+
 import java.util.*;
 
-public class grammel_lexer {
+public class GrammelLexer {
     private final String input;
     private int pos = 0;
 
@@ -21,7 +22,7 @@ public class grammel_lexer {
             Map.entry("or", TokenType.OR)
     );
 
-    public Lexer(String input) {
+    public GrammelLexer(String input) {
         this.input = input;
     }
 
@@ -119,12 +120,12 @@ public class grammel_lexer {
                     break;
                 case '?': pos++; tokens.add(new Token(TokenType.QUESTION, "?")); break;
                 case ':': pos++; tokens.add(new Token(TokenType.COLON, ":")); break;
-                case '(': pos++; tokens.add(new Token(TokenType.LPAREN, "(")); break;
-                case ')': pos++; tokens.add(new Token(TokenType.RPAREN, ")")); break;
-                case '{': pos++; tokens.add(new Token(TokenType.LBRACE, "{")); break;
-                case '}': pos++; tokens.add(new Token(TokenType.RBRACE, "}")); break;
-                case ';': pos++; tokens.add(new Token(TokenType.SEMICOLON, ";")); break;
-                case ',': pos++; tokens.add(new Token(TokenType.COMMA, ",")); break;
+                case '(': pos++; tokens.add(new Token(TokenType.LPAREN, "\'(\'")); break;
+                case ')': pos++; tokens.add(new Token(TokenType.RPAREN, "\')\'")); break;
+                case '{': pos++; tokens.add(new Token(TokenType.LBRACE, "\'{\'")); break;
+                case '}': pos++; tokens.add(new Token(TokenType.RBRACE, "\'}\'")); break;
+                case ';': pos++; tokens.add(new Token(TokenType.SEMICOLON, "\';\'")); break;
+                case ',': pos++; tokens.add(new Token(TokenType.COMMA, "\',\'")); break;
                 default:
                     pos++; tokens.add(new Token(TokenType.INVALID, Character.toString(ch)));
                     break;

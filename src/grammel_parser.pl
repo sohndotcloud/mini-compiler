@@ -13,11 +13,11 @@ argList(argList(A, AL)) --> argv(A), [','], argList(AL).
 argv(argv(T, I)) --> type(T), id(I). 
 
 %  SCOPE
-blockScope((B)) --> ['{'], block(B), ['}']. 
-block(block(S)) --> statementBlockList(S). 
+blockScope(block(B)) --> ['{'], block(B), ['}'].
+block(S) --> statementBlockList(S).
 
 %  statementS block LIST
-statementBlockList((SB)) --> statementBlock(SB). 
+statementBlockList(SB) --> statementBlock(SB).
 statementBlockList((SB, SBL)) --> statementBlock(SB), statementBlockList(SBL).
 
 %  statement BLOCK
@@ -36,9 +36,10 @@ statementsList((S, SL)) --> statement(S), [;], statementsList(SL).
 statement(AS) --> assignment(AS).
 statement(DL) --> declaration(DL).
 statement(PS) --> printStatement(PS).
+statement(RT) --> return(RT).
 
 % PRINT STATEMENT
-printStatement(print(V)) --> [print], integer(V).
+printStatement(print(V)) --> [print], number(V).
 printStatement(print_id(I)) --> [print], id(I).
 
 %  conditional
@@ -90,7 +91,7 @@ type(type(string)) --> [string].
 any(A) --> anyValue(A).
 any(E) --> expression(E). 
 
-anyValue(V) --> integerWrap(V).
+anyValue(V) --> number(V).
 anyValue(S) --> string(S).
 anyValue(T) --> ternary(T). 
 
@@ -98,62 +99,13 @@ id(name(S)) --> char(S).
 string(string(S)) --> ['"'], chars(S), ['"'].
 
 % TODO Define list of characters 
-chars((C1, C2)) --> char(C1), chars(C2).
 chars((C)) --> char(C).
-char((a)) --> [a].
-char((b)) --> [b].
-char((c)) --> [c].
-char((d)) --> [d].
-char((e)) --> [e].
-char((f)) --> [f].
-char((g)) --> [g].
-char((h)) --> [h].
-char((i)) --> [i].
-char((j)) --> [j].
-char((k)) --> [k].
-char((l)) --> [l].
-char((m)) --> [m].
-char((n)) --> [n].
-char((o)) --> [o].
-char((p)) --> [p].
-char((q)) --> [q].
-char((r)) --> [r].
-char((s)) --> [s].
-char((t)) --> [t].
-char((u)) --> [u].
-char((v)) --> [v].
-char((w)) --> [w].
-char((x)) --> [x].
-char((y)) --> [y].
-char((z)) --> [z].
-char((1)) --> [1].
-char((2)) --> [2].
-char((3)) --> [3].
-char((4)) --> [4].
-char((5)) --> [5].
-char((6)) --> [6].
-char((7)) --> [7].
-char((8)) --> [8].
-char((9)) --> [9].
-char((0)) --> [0].
-char((.)) --> [.].
-char((!)) --> [!].
-char((@)) --> [@].
-char((#)) --> [#].
+chars((C1, C2)) --> char(C1), chars(C2).
+char(C) -->
+    [Token],
+    { atom(Token), C = Token }.
 
-integerWrap(integer(V)) --> integerList(V).
-integerList(V) --> integer(V).
-integerList((V1,V2)) --> integer(V1), integerList(V2).
-integer((0)) --> [0].
-integer((1)) --> [1].
-integer((2)) --> [2].
-integer((3)) --> [3].
-integer((4)) --> [4].
-integer((5)) --> [5].
-integer((6)) --> [6].
-integer((7)) --> [7].
-integer((8)) --> [8].
-integer((9)) --> [9].
+number(number(N)) --> [Token], { number(Token), N = Token }.
 
 expression(T) --> term(T). 
 expression(add(T1, T2)) --> term(T1), ['+'], expression(T2).
@@ -164,7 +116,7 @@ term(mult(P1, P2)) --> paran(P1), [*], paran(P2).
 term(div(P1, P2)) --> paran(P1), [/], paran(P2).
 
 paran(paran(E)) --> ['('], expression(E), [')'].
-paran(integer(V)) --> integerList(V). 
+paran(V) --> number(V). 
 
 ternary(tern(B, A1, A2)) --> boolean(B), [?],  any(A1), [:], any(A2). 
 ternary(tern(B, A1, A2)) --> boolean(B), [?],  boolean(A1), [:], boolean(A2). 
@@ -176,7 +128,7 @@ boolean(bool(V1, NOP, V2)) --> booleanNumOp(V1), numOperator(NOP), booleanNumOp(
 boolean(bool(V, BOP, B1)) --> id(V), boolOperator(BOP), id(B1).
 
 booleanNumOp(V) --> id(V).
-booleanNumOp(V) --> integer(V).
+booleanNumOp(V) --> number(V).
 
 numOperator(nop(>)) --> [>].
 numOperator(nop(>=)) --> [>=].
@@ -193,3 +145,4 @@ booleanTernary(bTern(BR, B1, B2)) --> boolean(BR), [?], boolean(B1), [:], boolea
 functionCall(funcCall(I, PL)) -->  id(I), ['('], paramList(PL), [')'].
 paramList((P, PL)) --> any(P), [','], paramList(PL).
 paramList(P) --> any(P).
+return(P) --> [return], anyValue(P).

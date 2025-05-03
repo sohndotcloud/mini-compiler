@@ -1,3 +1,5 @@
+package org.kotlin.spring;
+
 public enum TokenType {
     // Keywords
     INT, BOOLEAN, STRING, IF, ELSE, WHILE, FOR, PRINT, TRUE, FALSE, NOT, AND, OR,
