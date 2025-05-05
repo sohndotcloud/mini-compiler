@@ -1,16 +1,21 @@
-int n(int x, int y) {
-    int z = 234;
-    z = 22;
-
-    if (x == y) {
-        y = 5;
-    } else if (true) {
-        x = 5;
+int ifteTest() {
+    int y = 4;
+    if (y < 1) {
+        print "error";
     } else {
-        x = 10;
+        if (y > 5) {
+            print "error";
+        } else if (y == 4) {
+            print "here";
+            y--;
+        }
     }
 
-    while (x > y) {
-        z = x == y ? true : false;
+    if (y == 4) {
+        print "error";
+    } else {
+        print y;
     }
+
+    return 0;
 }

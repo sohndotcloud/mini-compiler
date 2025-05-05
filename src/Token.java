@@ -1,5 +1,3 @@
-package org.kotlin.spring;
-
 public class Token {
     public final TokenType type;
     public final String lexeme;

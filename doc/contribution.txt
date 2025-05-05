@@ -14,3 +14,9 @@ Contributions from the team members until 15th April (Milestone 2):
 *Building of lexical analyzer :- Advait.
 *Sample Program running and testing :- Nils,Advait.
 *Structuring of tokens :- Himanshi.
+
+Contributions from the team members until Milestone 3:
+*Building of Runtime :Nils
+
+Contributions from the team members until Final Milestone:
+*Creating the video :Nils

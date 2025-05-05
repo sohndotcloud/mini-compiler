@@ -1,13 +1,9 @@
-package org.kotlin.spring;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import static org.kotlin.spring.ParseTree.parseTree;
-
 
 public class Runtime {
     public static void main(String[] args) {
@@ -16,6 +12,10 @@ public class Runtime {
             return;
         }
 
+        System.setProperty("nashorn.args", "--no-deprecation-warning");
+        for (String arg : args) {
+            System.out.println(arg);
+        }
         String filePath = args[0];
         String line = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -26,10 +26,9 @@ public class Runtime {
             System.err.println("An error occurred while reading the file:");
             System.exit(1);
         }
-        Node parseTree = parseTree(line);
-        List<String> arguments = new ArrayList<>();
-        arguments.add("15");
-        arguments.add("22");
+        Node parseTree = ParseTree.parseTree(line);
+        List<String> arguments =
+                new ArrayList<>(Arrays.asList(args).subList(1, args.length));
         Environment environment = new Environment(parseTree, arguments);
         environment.runProgram(null);
     }

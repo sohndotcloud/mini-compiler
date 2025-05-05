@@ -1,0 +1,6 @@
+int evaluateExpression() {
+    int z = 234;
+    z = 2 * (3 / 2);
+    print z;
+    return z;
+}

@@ -1,0 +1,9 @@
+boolean booleanTest(int x, int y) {
+    boolean w;
+    y = 99;
+    w = y > 99 ? true : false;
+    if (w == false) {
+        return true;
+    }
+    return w;
+}

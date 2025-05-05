@@ -1,5 +1,3 @@
-package org.kotlin.spring;
-
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;

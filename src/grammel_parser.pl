@@ -1,4 +1,3 @@
-
 program(program(FL)) --> functionList(FL).
 
 %  function LIST
@@ -7,10 +6,12 @@ functionList((F,FL)) --> function(F), functionList(FL).
 
 %  function STRUCTURE
 function(func(S, BS)) --> signature(S), blockScope(BS). 
-signature(sign(T, I, AL)) --> type(T), id(I), ['('], argList(AL), [')']. 
-argList((A)) --> argv(A). 
+signature(sign(T, I)) --> type(T), id(I), ['('], [')'].
+signature(sign(T, I, AL)) --> type(T), id(I), ['('], argList(AL), [')'].
+
+argList((A)) --> argv(A).
 argList(argList(A, AL)) --> argv(A), [','], argList(AL).
-argv(argv(T, I)) --> type(T), id(I). 
+argv(argv(T, I)) --> type(T), id(I).
 
 %  SCOPE
 blockScope(block(B)) --> ['{'], block(B), ['}'].
@@ -23,59 +24,62 @@ statementBlockList((SB, SBL)) --> statementBlock(SB), statementBlockList(SBL).
 %  statement BLOCK
 statementBlock(SL) --> statementsList(SL), [;].
 statementBlock(CL) --> conditionalList(CL).
+% Add a specific rule for return statement with semicolon
+statementBlock(return(RT)) --> [return], any(RT), [;].
 
 %  conditional LIST
-conditionalList(C) --> conditional(C). 
+conditionalList(C) --> conditional(C).
 conditionalList((C, CL)) --> conditional(C), conditionalList(CL).
 
 %  statementS LIST
-statementsList(S) --> statement(S). 
+statementsList(S) --> statement(S).
 statementsList((S, SL)) --> statement(S), [;], statementsList(SL).
 
 %  statement
 statement(AS) --> assignment(AS).
 statement(DL) --> declaration(DL).
 statement(PS) --> printStatement(PS).
-statement(RT) --> return(RT).
+% Keep the return rule for use in expressions, but don't expect a semicolon here
 
 % PRINT STATEMENT
 printStatement(print(V)) --> [print], number(V).
+printStatement(print_string(S)) --> [print], string(S).
 printStatement(print_id(I)) --> [print], id(I).
 
 %  conditional
 conditional(cond(IF)) --> ifte(IF).
 conditional(cond(WL)) --> whileLoop(WL).
-conditional(cond(FL)) --> forLoop(FL). 
+conditional(cond(FL)) --> forLoop(FL).
 
 %  conditional PARAN
-conditionalParan(condParan(B)) --> ['('], boolean(B), [')']. 
+conditionalParan(condParan(B)) --> ['('], boolean(B), [')'].
 
 % ifte
-ifte(ifte(C, B)) --> [if], conditionalParan(C), blockScope(B). 
+ifte(ifte(C, B)) --> [if], conditionalParan(C), blockScope(B).
 ifte(ifte(C, B, E)) --> [if], conditionalParan(C), blockScope(B), else(E).
-else(else(B)) --> [else], blockScope(B). 
+else(else(B)) --> [else], blockScope(B).
 else(elseif(I)) --> [else], ifte(I).
 else(elseif(I, B)) --> [else], ifte(I), else(B).
 
 % WHILE
-whileLoop(wloop(C, B)) --> [while], conditionalParan(C), blockScope(B). 
+whileLoop(wloop(C, B)) --> [while], conditionalParan(C), blockScope(B).
 
 % FOR LOOP
-forLoop(floop(C1, B, C2, BL)) --> [for], ['('], csv(C1), [;], boolean(B), [;], csv(C2), [')'], blockScope(BL). 
+forLoop(floop(C1, B, C2, BL)) --> [for], ['('], csv(C1), [;], boolean(B), [;], csv(C2), [')'], blockScope(BL).
 csv(csv(S, C)) --> statement(S), [','], csv(C).
-csv(S) --> statement(S). 
- 
+csv(S) --> statement(S).
+
 declaration(decl(T, I)) --> type(T), id(I).
 declaration(decl(T, I, A)) --> type(T), id(I), [=], anyValue(A).
-declaration(decl(T, I, E)) --> type(T), id(I), [=], expression(E). 
+declaration(decl(T, I, E)) --> type(T), id(I), [=], expression(E).
 
-% How to scan for partial strings like ++ and -- 
+% How to scan for partial strings like ++ and --
 assignment(assign(I, A)) --> id(I), [=], anyValue(A).
 assignment(assign(I, B)) --> id(I), [=], boolean(B).
 assignment(assign(I, E)) --> id(I), [=], expression(E).
 assignment(assign(I, AOP, E)) --> id(I), assignmentOperator(AOP), expression(E).
 assignment(assign(I, VOP)) --> id(I), valueOperator(VOP).
-assignment(assign(VOP, I)) --> valueOperator(VOP), id(I). 
+assignment(assign(VOP, I)) --> valueOperator(VOP), id(I).
 
 assignmentOperator(assignOp(+=)) --> [+=].
 assignmentOperator(assignOp(-=)) --> [-=].
@@ -94,6 +98,7 @@ any(E) --> expression(E).
 anyValue(V) --> number(V).
 anyValue(S) --> string(S).
 anyValue(T) --> ternary(T). 
+anyValue(I) --> id(I).
 
 id(name(S)) --> char(S).
 string(string(S)) --> ['"'], chars(S), ['"'].
@@ -112,11 +117,12 @@ expression(add(T1, T2)) --> term(T1), ['+'], expression(T2).
 expression(subt(T1, T2)) --> term(T1), ['-'], expression(T2).
 
 term(P) --> paran(P). 
-term(mult(P1, P2)) --> paran(P1), [*], paran(P2).
-term(div(P1, P2)) --> paran(P1), [/], paran(P2).
+term(mult(P1, P2)) --> paran(P1), ['*'], term(P2).
+term(divi(P1, P2)) --> paran(P1), ['/'], term(P2).
 
 paran(paran(E)) --> ['('], expression(E), [')'].
 paran(V) --> number(V). 
+paran(I) --> id(I).  % Added to handle variables in expressions
 
 ternary(tern(B, A1, A2)) --> boolean(B), [?],  any(A1), [:], any(A2). 
 ternary(tern(B, A1, A2)) --> boolean(B), [?],  boolean(A1), [:], boolean(A2). 
@@ -145,4 +151,3 @@ booleanTernary(bTern(BR, B1, B2)) --> boolean(BR), [?], boolean(B1), [:], boolea
 functionCall(funcCall(I, PL)) -->  id(I), ['('], paramList(PL), [')'].
 paramList((P, PL)) --> any(P), [','], paramList(PL).
 paramList(P) --> any(P).
-return(P) --> [return], anyValue(P).

@@ -1,5 +1,3 @@
-package org.kotlin.spring;
-
 import java.util.List;
 
 public class Node {

@@ -1,5 +1,3 @@
-package org.kotlin.spring;
-
 import java.util.*;
 
 public class GrammelLexer {
@@ -9,7 +7,7 @@ public class GrammelLexer {
     private static final Map<String, TokenType> keywords = Map.ofEntries(
             Map.entry("int", TokenType.INT),
             Map.entry("boolean", TokenType.BOOLEAN),
-            Map.entry("String", TokenType.STRING),
+            Map.entry("string", TokenType.STRING),
             Map.entry("if", TokenType.IF),
             Map.entry("else", TokenType.ELSE),
             Map.entry("while", TokenType.WHILE),
@@ -55,11 +53,15 @@ public class GrammelLexer {
             if (ch == '"') {
                 pos++; // skip opening quote
                 StringBuilder sb = new StringBuilder();
+                sb.append("\'");
                 while (pos < input.length() && input.charAt(pos) != '"') {
                     sb.append(input.charAt(pos++));
                 }
+                sb.append("\'");
                 pos++; // skip closing quote
-                tokens.add(new Token(TokenType.STRING_LITERAL, "\"" + sb + "\""));
+                tokens.add(new Token(TokenType.STRING_LITERAL, "'\"'"));
+                tokens.add(new Token(TokenType.STRING_LITERAL, sb.toString()));
+                tokens.add(new Token(TokenType.STRING_LITERAL, "'\"'"));
                 continue;
             }
 
