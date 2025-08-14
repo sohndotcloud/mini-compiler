@@ -1,6 +1,6 @@
 This mini-compiler is an AST generator with a compiler that runs the program.
 
-## Features (As per Milestone 2)
+## Features
 - *Primitive Types*: int, string, boolen
 - *Operators*: <,>,==,<=,>=, +=, -=
 - *Assignment Operator*: x++, --y
