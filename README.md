@@ -1,4 +1,4 @@
-This mini-compiler is an AST generator with a compiler that runs the program.
+## This mini-compiler is an AST generator with a compiler that runs the program.
 
 ## Features
 - *Primitive Types*: int, string, boolen
